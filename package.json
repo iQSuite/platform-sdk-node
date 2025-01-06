@@ -11,7 +11,9 @@
   "scripts": {
     "build": "tsc",
     "prepublishOnly": "npm run build",
-    "test": "jest"
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage"
   },
   "keywords": [
     "iqsuite",
@@ -41,4 +43,3 @@
     "node": ">=14.0.0"
   }
 }
-

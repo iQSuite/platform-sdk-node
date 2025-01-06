@@ -64,20 +64,3 @@ const client = new IQSuiteClient({
 // All methods return Promises
 ```
 
-## Development
-
-1. Clone the repository:
-```bash
-git clone https://github.com/blue-hex/iqsuite-platform-js-sdk.git
-cd iqsuite-js
-```
-
-2. Install dependencies:
-```bash
-npm install
-```
-
-3. Build the package:
-```bash
-npm run build
-```
