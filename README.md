@@ -7,7 +7,7 @@ A JavaScript/TypeScript SDK for interacting with the IQSuite API.
 ```bash
 npm install iqsuite  # From NPM
 # or
-npm install github:blue-hex/iqsuite-js  # From GitHub
+npm install github:blue-hex/iqsuite-platform-js-sdk  # From GitHub
 ```
 
 ## Usage
@@ -68,7 +68,7 @@ const client = new IQSuiteClient({
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/blue-hex/iqsuite-js.git
+git clone https://github.com/blue-hex/iqsuite-platform-js-sdk.git
 cd iqsuite-js
 ```
 
