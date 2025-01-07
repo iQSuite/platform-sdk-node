@@ -21,7 +21,7 @@ export class IQSuiteClient {
 
   constructor({
     apiKey,
-    baseUrl = "https://iqsuite.cooliocorp.com/api/v1",
+    baseUrl = "https://staging.iqsuite.ai/api/v1",
     verifySsl = true,
   }: IQSuiteClientOptions) {
     this.baseUrl = baseUrl.replace(/\/$/, "");
