@@ -20,10 +20,14 @@ export interface Document {
     [key: string]: any;
 }
 
-export interface DocumentListResponse {
+export interface DocumentListData {
     documents: Document[];
     index: string;
     [key: string]: any;
+}
+
+export interface DocumentListResponse {
+    data: DocumentListData;
 }
 
 export interface TaskStatus {
@@ -32,11 +36,35 @@ export interface TaskStatus {
     [key: string]: any;
 }
 
-export interface TaskResponse {
+export interface TaskResponseData {
     message: string;
     task_id: string;
     check_status: string;
     [key: string]: any;
+}
+
+export interface TaskResponse {
+    data: TaskResponseData;
+}
+
+export interface InstantRagResponse {
+    data: {
+        message: string;
+        id: string;
+        query_url: string;
+    };
+}
+
+export interface InstantRagQueryData {
+    uuid: string;
+    query: string;
+    retrieval_response: string;
+    credits_cost: number;
+    total_tokens: number;
+}
+
+export interface InstantRagQueryResponse {
+    data: InstantRagQueryData;
 }
 
 export class IQSuiteException extends Error {

@@ -1,10 +1,17 @@
-import axios, { AxiosInstance, AxiosResponse } from "axios";
+import axios, {
+  AxiosInstance,
+  AxiosResponse,
+  RawAxiosRequestHeaders,
+  AxiosHeaders,
+} from "axios";
 import {
   User,
   Index,
   DocumentListResponse,
   TaskResponse,
   TaskStatus,
+  InstantRagResponse,
+  InstantRagQueryResponse,
   AuthenticationError,
   APIError,
 } from "./types";
@@ -15,24 +22,36 @@ interface IQSuiteClientOptions {
   verifySsl?: boolean;
 }
 
+const SUPPORTED_MIME_TYPES = new Set([
+  "application/pdf",
+  "application/msword",
+  "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+  "application/vnd.ms-powerpoint",
+  "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+  "image/jpeg",
+  "image/png",
+  "image/tiff",
+  "image/bmp",
+]);
+
 export class IQSuiteClient {
   private client: AxiosInstance;
   private baseUrl: string;
 
   constructor({
     apiKey,
-    baseUrl = "https://staging.iqsuite.ai/api/v1",
+    baseUrl = "https://iqsuite.ai/api/v1",
     verifySsl = true,
   }: IQSuiteClientOptions) {
     this.baseUrl = baseUrl.replace(/\/$/, "");
 
     this.client = axios.create({
       baseURL: this.baseUrl,
-      headers: {
+      headers: new AxiosHeaders({
         Authorization: `Bearer ${apiKey}`,
         Accept: "application/json",
         "Content-Type": "application/json",
-      },
+      }),
       httpsAgent: verifySsl
         ? undefined
         : new (require("https").Agent)({
@@ -48,7 +67,7 @@ export class IQSuiteClient {
       throw new APIError(`API error: ${data.error}`, response.status, response);
     }
 
-    return data.data || data;
+    return data;
   }
 
   private handleError(error: any): never {
@@ -74,6 +93,29 @@ export class IQSuiteClient {
     }
 
     throw new APIError(`Network error: ${error.message}`);
+  }
+
+  private getMimeType(filename: string): string {
+    const extension = filename.toLowerCase().split(".").pop();
+    const mimeTypes: { [key: string]: string } = {
+      pdf: "application/pdf",
+      doc: "application/msword",
+      docx: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      ppt: "application/vnd.ms-powerpoint",
+      pptx: "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+      jpg: "image/jpeg",
+      jpeg: "image/jpeg",
+      png: "image/png",
+      tiff: "image/tiff",
+      bmp: "image/bmp",
+    };
+
+    const mimeType = mimeTypes[extension || ""];
+    if (!mimeType) {
+      throw new Error(`Unsupported file type: ${extension}`);
+    }
+
+    return mimeType;
   }
 
   async getUser(): Promise<User> {
@@ -110,17 +152,27 @@ export class IQSuiteClient {
     filename: string
   ): Promise<TaskResponse> {
     try {
+      const mimeType = this.getMimeType(filename);
+      if (!SUPPORTED_MIME_TYPES.has(mimeType)) {
+        throw new Error(
+          `Unsupported file type: ${mimeType}. Supported types are: PDF, DOC, DOCX, PPT, PPTX, JPG, PNG, TIFF, BMP`
+        );
+      }
+
       const formData = new FormData();
       formData.append(
         "document",
-        new Blob([document], { type: "application/pdf" }),
+        new Blob([document], { type: mimeType }),
         filename
       );
 
+      const headers = new AxiosHeaders({
+        "Content-Type": "multipart/form-data",
+        Authorization: this.client.defaults.headers["Authorization"] as string,
+      });
+
       const response = await this.client.post("/index/create", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
+        headers,
       });
       return this.handleResponse<TaskResponse>(response);
     } catch (error) {
@@ -134,20 +186,93 @@ export class IQSuiteClient {
     filename: string
   ): Promise<TaskResponse> {
     try {
+      const mimeType = this.getMimeType(filename);
+      if (!SUPPORTED_MIME_TYPES.has(mimeType)) {
+        throw new Error(
+          `Unsupported file type: ${mimeType}. Supported types are: PDF, DOC, DOCX, PPT, PPTX, JPG, PNG, TIFF, BMP`
+        );
+      }
+
       const formData = new FormData();
       formData.append(
         "document",
-        new Blob([document], { type: "application/pdf" }),
+        new Blob([document], { type: mimeType }),
         filename
       );
       formData.append("index", indexId);
 
+      const headers = new AxiosHeaders({
+        "Content-Type": "multipart/form-data",
+        Authorization: this.client.defaults.headers["Authorization"] as string,
+      });
+
       const response = await this.client.post("/index/add-document", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
+        headers,
       });
       return this.handleResponse<TaskResponse>(response);
+    } catch (error) {
+      throw this.handleError(error);
+    }
+  }
+
+  async createIndexAndPoll(
+    document: Buffer | Blob,
+    filename: string,
+    maxRetries: number = 5,
+    pollInterval: number = 5000
+  ): Promise<[TaskResponse, TaskStatus]> {
+    try {
+      const response = await this.createIndex(document, filename);
+      const taskId = response.data.task_id;
+
+      let retries = 0;
+      while (retries < maxRetries) {
+        const status = await this.getTaskStatus(taskId);
+        if (status.status === "completed") {
+          return [response, status];
+        } else if (status.status === "failed") {
+          throw new APIError(`Task failed with status: ${status.status}`);
+        }
+
+        await new Promise((resolve) => setTimeout(resolve, pollInterval));
+        retries++;
+      }
+
+      throw new APIError(
+        `Maximum retries (${maxRetries}) reached while polling task status`
+      );
+    } catch (error) {
+      throw this.handleError(error);
+    }
+  }
+
+  async addDocumentAndPoll(
+    indexId: string,
+    document: Buffer | Blob,
+    filename: string,
+    maxRetries: number = 5,
+    pollInterval: number = 5000
+  ): Promise<[TaskResponse, TaskStatus]> {
+    try {
+      const response = await this.addDocument(indexId, document, filename);
+      const taskId = response.data.task_id;
+
+      let retries = 0;
+      while (retries < maxRetries) {
+        const status = await this.getTaskStatus(taskId);
+        if (status.status === "completed") {
+          return [response, status];
+        } else if (status.status === "failed") {
+          throw new APIError(`Task failed with status: ${status.status}`);
+        }
+
+        await new Promise((resolve) => setTimeout(resolve, pollInterval));
+        retries++;
+      }
+
+      throw new APIError(
+        `Maximum retries (${maxRetries}) reached while polling task status`
+      );
     } catch (error) {
       throw this.handleError(error);
     }
@@ -199,6 +324,32 @@ export class IQSuiteClient {
       throw this.handleError(error);
     }
   }
-}
-export { AuthenticationError };
 
+  async createInstantRag(context: string): Promise<InstantRagResponse> {
+    try {
+      const response = await this.client.post("/index/instant/create", {
+        context,
+      });
+      return this.handleResponse<InstantRagResponse>(response);
+    } catch (error) {
+      throw this.handleError(error);
+    }
+  }
+
+  async queryInstantRag(
+    indexId: string,
+    query: string
+  ): Promise<InstantRagQueryResponse> {
+    try {
+      const response = await this.client.post("/index/instant/query", {
+        index: indexId,
+        query,
+      });
+      return this.handleResponse<InstantRagQueryResponse>(response);
+    } catch (error) {
+      throw this.handleError(error);
+    }
+  }
+}
+
+export { AuthenticationError, APIError };
