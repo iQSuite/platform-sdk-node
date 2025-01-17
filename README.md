@@ -50,7 +50,7 @@ Welcome to the **iQ Suite JavaScript/TypeScript SDK**! This Software Development
     - [Update Webhook](#update-webhook)
     - [Delete Webhook](#delete-webhook)
   - [Rate Limiting and Request Throttling](#rate-limiting-and-request-throttling)
-- [Supported Documents](#supported-documents)
+- [Supported Documents & Max File Size](#supported-documents-and-max-file-size)
 - [Error Handling](#error-handling)
 - [Support](#support)
 - [License](#license)
@@ -1479,9 +1479,9 @@ When specific events occur, the iQ Suite Platform sends POST requests to your we
 
 > **🔒 Important:** *Always verify webhook signatures in production environments to ensure that incoming requests are genuinely from the iQ Suite Platform and not malicious actors.*
 
-### Supported Documents
+### Supported Documents and Max File Size
 
-The iQ Suite Platform supports a variety of document formats, ensuring flexibility in handling different types of data. Additionally, documents are automatically processed with Optical Character Recognition (OCR) when applicable, enabling the extraction of text from images or scanned documents.
+The iQ Suite Platform supports a variety of document formats, ensuring flexibility in handling different types of data. Additionally, documents are automatically processed with Optical Character Recognition (OCR) when applicable, enabling the extraction of text from images or scanned documents. The **max file size** is capped at  **20 MB** with the file support of PDF, Docx and PPT. 
 
 #### Rate Limiting / Throttling
 
