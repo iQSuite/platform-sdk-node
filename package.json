@@ -1,5 +1,5 @@
 {
-  "name": "@iqsuite/ts",
+  "name": "iqsuite-node-sdk",
   "version": "0.1.0",
   "description": "JavaScript/TypeScript SDK for IQSuite API",
   "main": "dist/index.js",
