@@ -49,7 +49,8 @@ Welcome to the **iQ Suite JavaScript/TypeScript SDK**! This Software Development
     - [List Webhooks](#list-webhooks)
     - [Update Webhook](#update-webhook)
     - [Delete Webhook](#delete-webhook)
-- [Supported Documents](#supported-documents)
+  - [Rate Limiting and Request Throttling](#rate-limiting-and-request-throttling)
+- [Supported Documents & Max File Size](#supported-documents-and-max-file-size)
 - [Error Handling](#error-handling)
 - [Support](#support)
 - [License](#license)
@@ -346,6 +347,9 @@ Document-based RAG involves creating indices from your documents and performing 
 Creating an index allows the platform to process and understand your documents, enabling advanced search and retrieval capabilities.
 
 > **ℹ️ Information:** *Creating an index is an asynchronous operation. This means the process runs in the background, and you'll receive a task ID to monitor its progress.*
+
+> [!CAUTION]
+> To ensure optimal system performance and maintain service quality, create index function calls are subject to rate limiting controls ie, 10 requests per minute..*
 
 ##### Example: Create a New Index from a Document
 
@@ -1117,6 +1121,9 @@ The script will display the `Message`, `ID`, and `Query URL` associated with the
 #### Query Instant RAG
 
 ##### Example: Query Your Instant RAG Session
+> [!CAUTION]
+> To ensure optimal system performance and maintain service quality, query index function calls are subject to rate limiting controls ie, 10 requests per minute..*
+
 
 ```javascript
 // JavaScript Example
@@ -1472,9 +1479,9 @@ When specific events occur, the iQ Suite Platform sends POST requests to your we
 
 > **🔒 Important:** *Always verify webhook signatures in production environments to ensure that incoming requests are genuinely from the iQ Suite Platform and not malicious actors.*
 
-### Supported Documents
+### Supported Documents and Max File Size
 
-The iQ Suite Platform supports a variety of document formats, ensuring flexibility in handling different types of data. Additionally, documents are automatically processed with Optical Character Recognition (OCR) when applicable, enabling the extraction of text from images or scanned documents.
+The iQ Suite Platform supports a variety of document formats, ensuring flexibility in handling different types of data. Additionally, documents are automatically processed with Optical Character Recognition (OCR) when applicable, enabling the extraction of text from images or scanned documents. The **max file size** is capped at  **20 MB** with the file support of PDF, Docx and PPT. 
 
 #### Rate Limiting / Throttling
 
@@ -1503,6 +1510,25 @@ All the functions are processed under the rate limiter. The allowed usage volume
 
 - **Ensure Proper Formatting:** Well-structured documents with clear headings, subheadings, and consistent formatting improve processing accuracy.
 - **Clear and Legible Text:** Especially important for scanned documents, as OCR accuracy depends on text clarity.
+
+
+# Rate Limiting and Request Throttling
+
+To ensure optimal system performance and maintain service quality, below SDK function calls are subject to rate limiting controls. These measures help prevent server overload while ensuring consistent service delivery for all users of the iQ Suite platform.
+
+## Request Limits
+
+The following rate limits are enforced per endpoint:
+
+| Endpoint | Rate Limit |
+|----------|------------|
+| `rag-create-index` | 10 requests per minute |
+| `rag-retrieve-index` | 50 requests per minute |
+
+When these limits are exceeded, requests will be queued and processed according to our throttling algorithm. This helps maintain system stability while maximizing throughput for all users.
+
+Please ensure your application implements appropriate retry logic and respects these rate limits to optimize your integration with the iQ Suite services.
+
 
 ## Error Handling
 
