@@ -90,13 +90,13 @@ Installing the iQ Suite JavaScript/TypeScript SDK is straightforward. Follow the
    - **Using npm:**
 
      ```bash
-     npm install iqsuite
+     npm install iqsuite-node-sdk
      ```
 
    - **Using Yarn:**
 
      ```bash
-     yarn add iqsuite
+     yarn add iqsuite-node-sdk
      ```
 
    This command downloads and installs the latest version of the iQ Suite JavaScript/TypeScript SDK from npm.
@@ -185,7 +185,7 @@ Storing your API key in an environment variable enhances security by keeping sen
 
    ```javascript
    // Import the IQSuiteClient
-   const { IQSuiteClient } = require('iqsuite');
+   const { IQSuiteClient } = require('iqsuite-node-sdk');
 
    // Retrieve the API key from environment variables
    const apiKey = process.env.IQSUITE_API_KEY;
@@ -198,7 +198,7 @@ Storing your API key in an environment variable enhances security by keeping sen
 
    ```typescript
    // Import the IQSuiteClient
-   import { IQSuiteClient } from 'iqsuite';
+   import { IQSuiteClient } from 'iqsuite-node-sdk';
 
    // Retrieve the API key from environment variables
    const apiKey: string | undefined = process.env.IQSUITE_API_KEY;
@@ -219,7 +219,7 @@ Ensure that your client is correctly authenticated by fetching your user details
 
 ```javascript
 // JavaScript Example
-const { AuthenticationError, APIError } = require('iqsuite');
+const { AuthenticationError, APIError } = require('iqsuite-node-sdk');
 
 (async () => {
   try {
@@ -239,7 +239,7 @@ const { AuthenticationError, APIError } = require('iqsuite');
 
 ```typescript
 // TypeScript Example
-import { AuthenticationError, APIError } from 'iqsuite';
+import { AuthenticationError, APIError } from 'iqsuite-node-sdk';
 
 (async () => {
   try {
@@ -306,7 +306,7 @@ This example demonstrates how to verify your authentication by fetching details 
 
 ```typescript
 // TypeScript Example
-import { AuthenticationError, APIError } from 'iqsuite';
+import { AuthenticationError, APIError } from 'iqsuite-node-sdk';
 
 (async () => {
   try {
@@ -356,7 +356,7 @@ Creating an index allows the platform to process and understand your documents, 
 ```javascript
 // JavaScript Example
 const fs = require('fs');
-const { APIError } = require('iqsuite');
+const { APIError } = require('iqsuite-node-sdk');
 
 (async () => {
   try {
@@ -379,7 +379,7 @@ const { APIError } = require('iqsuite');
 ```typescript
 // TypeScript Example
 import fs from 'fs';
-import { APIError } from 'iqsuite';
+import { APIError } from 'iqsuite-node-sdk';
 
 (async () => {
   try {
@@ -417,7 +417,7 @@ Polling allows your application to regularly check the status of an asynchronous
 
 ```javascript
 // JavaScript Example
-const { APIError } = require('iqsuite');
+const { APIError } = require('iqsuite-node-sdk');
 
 (async () => {
   try {
@@ -447,7 +447,7 @@ const { APIError } = require('iqsuite');
 ```typescript
 // TypeScript Example
 import fs from 'fs';
-import { APIError } from 'iqsuite';
+import { APIError } from 'iqsuite-node-sdk';
 
 (async () => {
   try {
@@ -494,7 +494,7 @@ Adding documents to an existing index allows you to expand the knowledge base yo
 
 ```javascript
 // JavaScript Example
-const { APIError } = require('iqsuite');
+const { APIError } = require('iqsuite-node-sdk');
 
 (async () => {
   try {
@@ -522,7 +522,7 @@ const { APIError } = require('iqsuite');
 ```typescript
 // TypeScript Example
 import fs from 'fs';
-import { APIError } from 'iqsuite';
+import { APIError } from 'iqsuite-node-sdk';
 
 (async () => {
   try {
@@ -564,7 +564,7 @@ Wait for the document addition process to complete by periodically checking its 
 
 ```javascript
 // JavaScript Example
-const { APIError } = require('iqsuite');
+const { APIError } = require('iqsuite-node-sdk');
 
 (async () => {
   try {
@@ -595,7 +595,7 @@ const { APIError } = require('iqsuite');
 ```typescript
 // TypeScript Example
 import fs from 'fs';
-import { APIError } from 'iqsuite';
+import { APIError } from 'iqsuite-node-sdk';
 
 (async () => {
   try {
@@ -640,7 +640,7 @@ Retrieve a list of all indices you have created. This is useful for managing and
 
 ```javascript
 // JavaScript Example
-const { APIError } = require('iqsuite');
+const { APIError } = require('iqsuite-node-sdk');
 
 (async () => {
   try {
@@ -668,7 +668,7 @@ const { APIError } = require('iqsuite');
 
 ```typescript
 // TypeScript Example
-import { APIError, Index } from 'iqsuite';
+import { APIError, Index } from 'iqsuite-node-sdk';
 
 (async () => {
   try {
@@ -711,7 +711,7 @@ Retrieve all documents within a specific index. This helps you understand the co
 
 ```javascript
 // JavaScript Example
-const { APIError } = require('iqsuite');
+const { APIError } = require('iqsuite-node-sdk');
 
 (async () => {
   try {
@@ -735,7 +735,7 @@ const { APIError } = require('iqsuite');
 
 ```typescript
 // TypeScript Example
-import { APIError, DocumentListResponse } from 'iqsuite';
+import { APIError, DocumentListResponse } from 'iqsuite-node-sdk';
 
 (async () => {
   try {
@@ -776,7 +776,7 @@ Remove a specific document from an index. This action is irreversible, so procee
 
 ```javascript
 // JavaScript Example
-const { APIError } = require('iqsuite');
+const { APIError } = require('iqsuite-node-sdk');
 
 (async () => {
   try {
@@ -795,7 +795,7 @@ const { APIError } = require('iqsuite');
 
 ```typescript
 // TypeScript Example
-import { APIError } from 'iqsuite';
+import { APIError } from 'iqsuite-node-sdk';
 
 (async () => {
   try {
@@ -832,7 +832,7 @@ Engage in natural language conversations with your indexed documents. This featu
 
 ```javascript
 // JavaScript Example
-const { APIError } = require('iqsuite');
+const { APIError } = require('iqsuite-node-sdk');
 
 (async () => {
   try {
@@ -854,7 +854,7 @@ const { APIError } = require('iqsuite');
 
 ```typescript
 // TypeScript Example
-import { APIError } from 'iqsuite';
+import { APIError } from 'iqsuite-node-sdk';
 
 (async () => {
   try {
@@ -892,7 +892,7 @@ Perform precise and accurate searches within your indexed documents. This featur
 
 ```javascript
 // JavaScript Example
-const { APIError } = require('iqsuite');
+const { APIError } = require('iqsuite-node-sdk');
 
 (async () => {
   try {
@@ -913,7 +913,7 @@ const { APIError } = require('iqsuite');
 
 ```typescript
 // TypeScript Example
-import { APIError } from 'iqsuite';
+import { APIError } from 'iqsuite-node-sdk';
 
 (async () => {
   try {
@@ -950,7 +950,7 @@ Monitor the progress of any asynchronous operation, such as creating an index or
 
 ```javascript
 // JavaScript Example
-const { APIError } = require('iqsuite');
+const { APIError } = require('iqsuite-node-sdk');
 
 (async () => {
   try {
@@ -993,7 +993,7 @@ const { APIError } = require('iqsuite');
 
 ```typescript
 // TypeScript Example
-import { APIError } from 'iqsuite';
+import { APIError } from 'iqsuite-node-sdk';
 
 const delay = (ms: number): Promise<void> => new Promise(resolve => setTimeout(resolve, ms));
 
@@ -1055,7 +1055,7 @@ Instant RAG allows you to perform quick, one-time analyses on your text content 
 
 ```javascript
 // JavaScript Example
-const { APIError } = require('iqsuite');
+const { APIError } = require('iqsuite-node-sdk');
 
 (async () => {
   try {
@@ -1083,7 +1083,7 @@ const { APIError } = require('iqsuite');
 
 ```typescript
 // TypeScript Example
-import { APIError, InstantRagResponse } from 'iqsuite';
+import { APIError, InstantRagResponse } from 'iqsuite-node-sdk';
 
 (async () => {
   try {
@@ -1127,7 +1127,7 @@ The script will display the `Message`, `ID`, and `Query URL` associated with the
 
 ```javascript
 // JavaScript Example
-const { APIError } = require('iqsuite');
+const { APIError } = require('iqsuite-node-sdk');
 
 (async () => {
   try {
@@ -1161,7 +1161,7 @@ const { APIError } = require('iqsuite');
 
 ```typescript
 // TypeScript Example
-import { APIError, InstantRagQueryResponse } from 'iqsuite';
+import { APIError, InstantRagQueryResponse } from 'iqsuite-node-sdk';
 
 (async () => {
   try {
@@ -1217,7 +1217,7 @@ Set up a webhook to receive notifications about specific events from the iQ Suit
 
 ```javascript
 // JavaScript Example
-const { APIError } = require('iqsuite');
+const { APIError } = require('iqsuite-node-sdk');
 
 (async () => {
   try {
@@ -1241,7 +1241,7 @@ const { APIError } = require('iqsuite');
 
 ```typescript
 // TypeScript Example
-import { APIError, WebhookResponse } from 'iqsuite';
+import { APIError, WebhookResponse } from 'iqsuite-node-sdk';
 
 (async () => {
   try {
@@ -1282,7 +1282,7 @@ Retrieve a list of all webhooks you have set up. This helps you manage and revie
 
 ```javascript
 // JavaScript Example
-const { APIError } = require('iqsuite');
+const { APIError } = require('iqsuite-node-sdk');
 
 (async () => {
   try {
@@ -1307,7 +1307,7 @@ const { APIError } = require('iqsuite');
 
 ```typescript
 // TypeScript Example
-import { APIError, Webhook } from 'iqsuite';
+import { APIError, Webhook } from 'iqsuite-node-sdk';
 
 (async () => {
   try {
@@ -1347,7 +1347,7 @@ Modify the configuration of an existing webhook. This is useful if you need to c
 
 ```javascript
 // JavaScript Example
-const { APIError } = require('iqsuite');
+const { APIError } = require('iqsuite-node-sdk');
 
 (async () => {
   try {
@@ -1371,7 +1371,7 @@ const { APIError } = require('iqsuite');
 
 ```typescript
 // TypeScript Example
-import { APIError, WebhookResponse } from 'iqsuite';
+import { APIError, WebhookResponse } from 'iqsuite-node-sdk';
 
 (async () => {
   try {
@@ -1412,7 +1412,7 @@ Remove a webhook from your account. This stops all notifications to the specifie
 
 ```javascript
 // JavaScript Example
-const { APIError } = require('iqsuite');
+const { APIError } = require('iqsuite-node-sdk');
 
 (async () => {
   try {
@@ -1431,7 +1431,7 @@ const { APIError } = require('iqsuite');
 
 ```typescript
 // TypeScript Example
-import { APIError } from 'iqsuite';
+import { APIError } from 'iqsuite-node-sdk';
 
 (async () => {
   try {
@@ -1543,7 +1543,7 @@ Robust error handling is crucial for building reliable and user-friendly applica
 
 ```javascript
 // JavaScript Example
-const { AuthenticationError, APIError } = require('iqsuite');
+const { AuthenticationError, APIError } = require('iqsuite-node-sdk');
 
 (async () => {
   try {
@@ -1566,7 +1566,7 @@ const { AuthenticationError, APIError } = require('iqsuite');
 
 ```typescript
 // TypeScript Example
-import { AuthenticationError, APIError } from 'iqsuite';
+import { AuthenticationError, APIError } from 'iqsuite-node-sdk';
 
 (async () => {
   try {
