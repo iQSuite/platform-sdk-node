@@ -179,7 +179,16 @@ export class IQSuiteClient {
       const response = await this.client.post("/index/create", formData, {
         headers,
       });
-      return this.handleResponse<TaskResponse>(response);
+      
+      const taskResponse: TaskResponse = {
+        task_id: response.data.task_id,
+        data: {
+          message: response.data.message || "",
+          task_id: response.data.task_id,
+          check_status: response.data.check_status || ""
+        }
+      };
+      return taskResponse;
     } catch (error) {
       throw this.handleError(error);
     }
@@ -228,6 +237,7 @@ export class IQSuiteClient {
       let retries = 0;
       while (retries < maxRetries) {
         const status = await this.getTaskStatus(taskId);
+        
         if (status.status === "completed") {
           return [response, status];
         } else if (status.status === "failed") {
@@ -248,7 +258,6 @@ export class IQSuiteClient {
       throw new APIError(`Error in createIndexAndPoll: ${error}`);
     }
   }
-  
 
   async addDocumentAndPoll(
     indexId: string,
