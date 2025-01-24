@@ -367,7 +367,7 @@ export class IQSuiteClient {
     url: string,
     name: string,
     secret: string,
-    enabled: boolean
+    enabled: string
   ): Promise<WebhookResponse> {
     try {
       const payload = {
@@ -387,7 +387,7 @@ export class IQSuiteClient {
     webhookId: string,
     url: string,
     name: string,
-    enabled: boolean
+    enabled: string
   ): Promise<WebhookResponse> {
     try {
       const payload = {
