@@ -286,12 +286,18 @@ export class IQSuiteClient {
     }
   }
 
-  async retrieve(indexId: string, query: string): Promise<any> {
+  async retrieve(indexId: string, query: string, document_id?: string): Promise<any> {
     try {
-      const response = await this.client.post("/index/retrieve", {
+      const payload: any = {
         index: indexId,
         query,
-      });
+      };
+
+      if (document_id !== undefined) {
+        payload.document_id = document_id;
+      }
+  
+      const response = await this.client.post("/index/retrieve", payload);
       return this.handleResponse<any>(response);
     } catch (error) {
       throw this.handleError(error);
