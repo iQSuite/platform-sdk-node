@@ -168,12 +168,10 @@ export class IQSuiteClient {
         contentType: mimeType,
       });
 
-      // Axios automatically sets the correct headers for FormData
       const response = await this.client.post("/index/create", formData, {
         headers: formData.getHeaders(),
       });
 
-      // Use handleResponse to ensure proper response handling
       return await this.handleResponse<TaskResponse>(response);
     } catch (error) {
       throw this.handleError(error);

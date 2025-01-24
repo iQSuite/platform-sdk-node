@@ -840,6 +840,7 @@ const { APIError } = require('iqsuite-node-sdk');
     const response = await client.retrieve(
       'your-index-id',
       "What are the main points discussed in the document?"
+      'document_id' // Optional document_id parameter to filter and retrieve from a specific document
     );
     console.log(`Response: ${JSON.stringify(response, null, 2)}`);
   } catch (error) {
@@ -861,7 +862,8 @@ import { APIError } from 'iqsuite-node-sdk';
     // Send a natural language query to the specified index
     const response = await client.retrieve(
       'your-index-id',
-      "What are the main points discussed in the document?"
+      "What are the main points discussed in the document?",
+      'document_id' // Optional document_id parameter to filter and retrieve from a specific document
     );
     console.log(`Response: ${JSON.stringify(response, null, 2)}`);
   } catch (error) {
@@ -879,6 +881,7 @@ import { APIError } from 'iqsuite-node-sdk';
 - **client.retrieve():** Sends the query to the platform and retrieves the response.
 - **'your-index-id':** Replace with your actual Index ID.
 - **Query String:** The natural language question you want to ask.
+- **document_id:** Document ID parameter to filter and retrieve from a specific document
 
 **Output:**
 
