@@ -20,6 +20,7 @@ export interface Index {
 // Document Interface
 export interface Document {
     id: string;
+    filename: string;
     created_at?: Date;
     updated_at?: Date;
     [key: string]: any;
@@ -41,6 +42,7 @@ export interface DocumentListResponse {
 export interface TaskStatus {
     status: 'pending' | 'in_progress' | 'completed' | 'failed';
     task_id?: string;
+    index_id?: string;
     [key: string]: any;
 }
 
@@ -82,10 +84,8 @@ export interface InstantRagQueryResponse {
 // Webhook Interface
 export interface Webhook {
     id: string;
-    url: string;
     name: string;
-    enabled: boolean;
-    secret: string;
+    enabled: string;
     created_at: string;
     updated_at: string;
 }
