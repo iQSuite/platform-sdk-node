@@ -1145,13 +1145,7 @@ const { APIError } = require('iqsuite-node-sdk');
 
     console.log(`UUID: ${response.uuid}`);
     console.log(`Total Tokens: ${response.total_tokens}`);
-    console.log(`Answer: ${response.answer}`);
-    if (response.source_documents) {
-      console.log('Source Documents:');
-      response.source_documents.forEach(doc => {
-        console.log(`- ID: ${doc.id}, File Name: ${doc.file_name}`);
-      });
-    }
+    console.log(`Answer: ${response.retrieval_response}`);
   } catch (error) {
     if (error instanceof APIError) {
       console.error(`API Error: ${error.message}`);
@@ -1358,7 +1352,7 @@ const { APIError } = require('iqsuite-node-sdk');
       "whk_abc123",                        // The ID of the webhook to update
       "https://your-domain.com/new-endpoint", // The new endpoint URL
       "Updated Webhook Name",              // The new name for the webhook
-      true                                 // Whether the webhook should be enabled (true/false)
+      "true"                                 // Whether the webhook should be enabled in strings (true/false)
     );
 
     console.log('Updated Webhook:', updatedWebhook);

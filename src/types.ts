@@ -75,11 +75,12 @@ export interface SourceDocument {
 
 // Instant RAG Query Response Interface
 export interface InstantRagQueryResponse {
-    uuid: string;
+    uuid: string; 
     total_tokens: number;
-    answer: string;
-    source_documents?: SourceDocument[];
-}
+    retrieval_response: string;
+    query: string;
+    credits_cost: number;
+  }
 
 // Webhook Interface
 export interface Webhook {

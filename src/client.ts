@@ -68,6 +68,13 @@ export class IQSuiteClient {
       headers,
       httpsAgent,
     });
+
+    this.client.interceptors.request.use((config: { headers: { [x: string]: string; }; }) => {
+      if (!config.headers["Authorization"]) {
+        config.headers["Authorization"] = `Bearer ${apiKey}`;
+      }
+      return config;
+    });
   }
 
   private async handleResponse<T>(response: AxiosResponse): Promise<T> {
@@ -161,17 +168,22 @@ export class IQSuiteClient {
   ): Promise<TaskResponse> {
     try {
       const mimeType = this.validateMimeType(filename);
-
+  
       const formData = new FormData();
       formData.append("document", document, {
         filename,
         contentType: mimeType,
       });
-
+  
+      const headers = {
+        ...formData.getHeaders(),
+        Authorization: this.client.defaults.headers["Authorization"],
+      };
+  
       const response = await this.client.post("/index/create", formData, {
-        headers: formData.getHeaders(),
+        headers,
       });
-
+  
       return await this.handleResponse<TaskResponse>(response);
     } catch (error) {
       throw this.handleError(error);
