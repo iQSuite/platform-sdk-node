@@ -1246,7 +1246,7 @@ import { APIError, WebhookResponse } from 'iqsuite-node-sdk';
       "https://your-domain.com/webhook",   // Your custom domain where the events notifications will be sent
       "Processing Events",                // Webhook name
       "your-webhook-secret",              // Add a layer of security with secret
-      true                                 // Webhook Enabled (true/false)
+      "true"                              // Webhook Enabled in strings (true/false)
     );
 
     console.log('Webhook Created:', webhook);
