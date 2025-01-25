@@ -1,4 +1,4 @@
-import { User, Index, DocumentListResponse, TaskResponse, TaskStatus, InstantRagResponse, InstantRagQueryResponse, WebhookListResponse, WebhookResponse, WebhookDeleteResponse, AuthenticationError, APIError, IQSuiteException, TaskResponseData } from "./types";
+import { User, Index, DocumentListResponse, TaskResponse, TaskStatus, InstantRagResponse, InstantRagQueryResponse, WebhookListResponse, WebhookResponse, WebhookDeleteResponse, AuthenticationError, APIError, IQSuiteException, TaskResponseData, TokenizerResponse } from "./types";
 interface IQSuiteClientOptions {
     apiKey: string;
     baseUrl?: string;
@@ -28,6 +28,7 @@ export declare class IQSuiteClient {
     createWebhook(url: string, name: string, secret: string, enabled: string): Promise<WebhookResponse>;
     updateWebhook(webhookId: string, url: string, name: string, enabled: string): Promise<WebhookResponse>;
     deleteWebhook(webhookId: string): Promise<WebhookDeleteResponse>;
+    tokenizer(text: string): Promise<TokenizerResponse>;
     private delay;
 }
 export { InstantRagQueryResponse, TaskStatus, TaskResponse, DocumentListResponse, User, Index, APIError, AuthenticationError, IQSuiteException, };

@@ -402,6 +402,18 @@ class IQSuiteClient {
             }
         });
     }
+    tokenizer(text) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const payload = { text: text };
+                const response = yield this.client.post("/tokenizer", payload);
+                return this.handleResponse(response);
+            }
+            catch (error) {
+                throw this.handleError(error);
+            }
+        });
+    }
     delay(ms) {
         return new Promise((resolve) => setTimeout(resolve, ms));
     }

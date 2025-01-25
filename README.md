@@ -49,6 +49,7 @@ Welcome to the **iQ Suite JavaScript/TypeScript SDK**! This Software Development
     - [List Webhooks](#list-webhooks)
     - [Update Webhook](#update-webhook)
     - [Delete Webhook](#delete-webhook)
+  - [Tokenizer](#tokenizer)
   - [Rate Limiting and Request Throttling](#rate-limiting-and-request-throttling)
 - [Supported Documents & Max File Size](#supported-documents-and-max-file-size)
 - [Error Handling](#error-handling)
@@ -1487,6 +1488,15 @@ All the functions are processed under the rate limiter. The allowed usage volume
 ```
 10 requests per minute to rag-create-index.
 50 requests per minute to rag-retrieve-index.
+```
+
+## Tokenizer
+The iQ Suite Platform offers a free and unlimited usage of the tokenizer model that you can use to calculate and estimate the token expenditure on the given piece of text
+
+>**NOTE:** The below tokenizer method is rate limitted to 50 requests per minute.
+```js
+response = await client.tokenizer('your_text');
+console.log(response);
 ```
 
 #### Supported Formats

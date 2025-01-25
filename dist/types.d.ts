@@ -102,3 +102,8 @@ export declare class APIError extends IQSuiteException {
 export interface TaskResponse {
     data: TaskResponseData;
 }
+export interface TokenizerResponse {
+    data: {
+        [key: string]: string;
+    };
+}

@@ -20,6 +20,7 @@ import {
   APIError,
   IQSuiteException,
   TaskResponseData,
+  TokenizerResponse,
 } from "./types";
 import { getMimeType } from "./utils";
 
@@ -424,6 +425,16 @@ export class IQSuiteClient {
       const payload = { webhook_id: webhookId };
       const response = await this.client.post("/webhooks/delete", payload);
       return this.handleResponse<WebhookDeleteResponse>(response);
+    } catch (error) {
+      throw this.handleError(error);
+    }
+  }
+
+  async tokenizer(text: string): Promise<TokenizerResponse> {
+    try {
+      const payload = { text: text };
+      const response = await this.client.post("/tokenizer", payload);
+      return this.handleResponse<TokenizerResponse>(response);
     } catch (error) {
       throw this.handleError(error);
     }
