@@ -51,14 +51,8 @@ export interface TaskResponseData {
     message: string;
     task_id: string;
     check_status: string;
-    [key: string]: any;
-}
-
-// Task Response Interface
-export interface TaskResponse {
-    task_id: any;
-    data: TaskResponseData;
-}
+  }
+  
 
 // Instant RAG Response Interface
 export interface InstantRagResponse {

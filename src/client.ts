@@ -19,6 +19,7 @@ import {
   AuthenticationError,
   APIError,
   IQSuiteException,
+  TaskResponseData,
 } from "./types";
 import { getMimeType } from "./utils";
 
@@ -50,32 +51,33 @@ export class IQSuiteClient {
     verifySsl = true,
   }: IQSuiteClientOptions) {
     this.baseUrl = baseUrl.replace(/\/$/, "");
-
+  
     const headers: AxiosHeaders = new AxiosHeaders({
       Authorization: `Bearer ${apiKey}`,
       Accept: "application/json",
       "Content-Type": "application/json",
     });
-
+  
     const httpsAgent = verifySsl
       ? undefined
       : new (require("https").Agent)({
           rejectUnauthorized: false,
         });
-
+  
     this.client = axios.create({
       baseURL: this.baseUrl,
       headers,
       httpsAgent,
     });
-
-    this.client.interceptors.request.use((config: { headers: { [x: string]: string; }; }) => {
-      if (!config.headers["Authorization"]) {
-        config.headers["Authorization"] = `Bearer ${apiKey}`;
+  
+    this.client.interceptors.request.use((config) => {
+      if (!config.headers.Authorization) {
+        config.headers.Authorization = `Bearer ${apiKey}`;
       }
       return config;
     });
   }
+  
 
   private async handleResponse<T>(response: AxiosResponse): Promise<T> {
     const data = response.data;
@@ -95,11 +97,11 @@ export class IQSuiteClient {
     if (axios.isAxiosError(error) && error.response) {
       const status = error.response.status;
       const message = error.response.data?.error || error.message;
-
+  
       if (status === 401) {
         throw new AuthenticationError("Invalid API key");
       }
-
+  
       if (status === 422) {
         const errorMessage = error.response.data?.message || message;
         throw new APIError(
@@ -108,7 +110,7 @@ export class IQSuiteClient {
           error.response
         );
       }
-
+  
       throw new APIError(
         `HTTP ${status} error: ${message}`,
         status,
@@ -119,9 +121,10 @@ export class IQSuiteClient {
     } else if (error instanceof Error) {
       throw new APIError(`Network error: ${error.message}`);
     }
-
+  
     throw new APIError(`An unknown error occurred`);
   }
+  
 
   private validateMimeType(filename: string): string {
     const mimeType = getMimeType(filename);
@@ -165,7 +168,7 @@ export class IQSuiteClient {
   async createIndex(
     document: Buffer | Blob,
     filename: string
-  ): Promise<TaskResponse> {
+  ): Promise<TaskResponseData> {
     try {
       const mimeType = this.validateMimeType(filename);
   
@@ -175,52 +178,49 @@ export class IQSuiteClient {
         contentType: mimeType,
       });
   
-      const headers = {
-        ...formData.getHeaders(),
-        Authorization: this.client.defaults.headers["Authorization"],
-      };
-  
       const response = await this.client.post("/index/create", formData, {
-        headers,
+        headers: formData.getHeaders(),
       });
   
-      return await this.handleResponse<TaskResponse>(response);
+      return this.handleResponse<TaskResponseData>(response);
     } catch (error) {
       throw this.handleError(error);
     }
   }
+  
 
   async addDocument(
     indexId: string,
     document: Buffer | Blob,
     filename: string
-  ): Promise<TaskResponse> {
+  ): Promise<TaskResponseData> {
     try {
       const mimeType = this.validateMimeType(filename);
-
+  
       const formData = new FormData();
       formData.append("document", document, {
         filename,
         contentType: mimeType,
       });
       formData.append("index", indexId);
-
+  
       const response = await this.client.post("/index/add-document", formData, {
         headers: formData.getHeaders(),
       });
-
-      return await this.handleResponse<TaskResponse>(response);
+  
+      return this.handleResponse<TaskResponseData>(response);
     } catch (error) {
       throw this.handleError(error);
     }
   }
+  
 
   async createIndexAndPoll(
     document: Buffer | Blob,
     filename: string,
     maxRetries: number = 5,
     pollInterval: number = 5000
-  ): Promise<[TaskResponse, TaskStatus]> {
+  ): Promise<[TaskResponseData, TaskStatus]> {
     try {
       const response = await this.createIndex(document, filename);
       const taskId = response.task_id;
@@ -256,25 +256,29 @@ export class IQSuiteClient {
     filename: string,
     maxRetries: number = 5,
     pollInterval: number = 5000
-  ): Promise<[TaskResponse, TaskStatus]> {
+  ): Promise<[TaskResponseData, TaskStatus]> {
     try {
       const response = await this.addDocument(indexId, document, filename);
-      console.info(response, "this is the one")
       const taskId = response.task_id;
-
+  
+      if (!taskId) {
+        throw new APIError("Task ID is undefined");
+      }
+  
       let retries = 0;
       while (retries < maxRetries) {
         const status = await this.getTaskStatus(taskId);
+  
         if (status.status === "completed") {
           return [response, status];
         } else if (status.status === "failed") {
           throw new APIError(`Task failed with status: ${status.status}`);
         }
-
+  
         await this.delay(pollInterval);
         retries++;
       }
-
+  
       throw new APIError(
         `Maximum retries (${maxRetries}) reached while polling task status`
       );
@@ -285,6 +289,7 @@ export class IQSuiteClient {
       throw new APIError(`Error in addDocumentAndPoll: ${error}`);
     }
   }
+  
 
   async getTaskStatus(taskId: string): Promise<TaskStatus> {
     try {
