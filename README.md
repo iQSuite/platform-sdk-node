@@ -365,7 +365,7 @@ const { APIError } = require('iqsuite-node-sdk');
 
     // Create a new index with the document
     const taskResponse = await client.createIndex(documentBuffer, 'document.pdf');
-    console.log(`Task ID: ${taskResponse.data.task_id}`);
+    console.log(`Task ID: ${taskResponse.task_id}`);
   } catch (error) {
     if (error instanceof APIError) {
       console.error(`API Error: ${error.message}`);
@@ -388,7 +388,7 @@ import { APIError } from 'iqsuite-node-sdk';
 
     // Create a new index with the document
     const taskResponse = await client.createIndex(documentBuffer, 'document.pdf');
-    console.log(`Task ID: ${taskResponse.data.task_id}`);
+    console.log(`Task ID: ${taskResponse.task_id}`);
   } catch (error) {
     if (error instanceof APIError) {
       console.error(`API Error: ${error.message}`);
@@ -403,7 +403,7 @@ import { APIError } from 'iqsuite-node-sdk';
 
 - **fs.readFileSync():** Reads the PDF file in binary mode.
 - **client.createIndex():** Initiates the index creation process.
-- **taskResponse.data.task_id:** Receives a unique identifier to track the status of the indexing task.
+- **taskResponse.task_id:** Receives a unique identifier to track the status of the indexing task.
 
 **Next Steps:**
 
@@ -432,7 +432,7 @@ const { APIError } = require('iqsuite-node-sdk');
       3000      // pollInterval in ms
     );
 
-    console.log(`Index ID: ${createResponse.data.task_id}`);
+    console.log(`Index ID: ${createResponse.task_id}`);
     console.log(`Task Status: ${taskStatus.status}`);
   } catch (error) {
     if (error instanceof APIError) {
@@ -462,7 +462,7 @@ import { APIError } from 'iqsuite-node-sdk';
       3000      // pollInterval in ms
     );
 
-    console.log(`Index ID: ${createResponse.data.task_id}`);
+    console.log(`Index ID: ${createResponse.task_id}`);
     console.log(`Task Status: ${taskStatus.status}`);
   } catch (error) {
     if (error instanceof APIError) {
@@ -1222,7 +1222,7 @@ const { APIError } = require('iqsuite-node-sdk');
       "https://your-domain.com/webhook",   // Your custom domain where the events notifications will be sent
       "Processing Events",                // Webhook name
       "your-webhook-secret",              // Add a layer of security with secret
-      true                                 // Webhook Enabled (true/false)
+      "true"                              // Webhook Enabled in strings (true/false)
     );
 
     console.log('Webhook Created:', webhook);
