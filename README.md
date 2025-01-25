@@ -508,7 +508,7 @@ const { APIError } = require('iqsuite-node-sdk');
       'new-document.pdf'
     );
 
-    console.log(`Task ID: ${taskResponse.data.task_id}`);
+    console.log(`Task ID: ${taskResponse.task_id}`);
   } catch (error) {
     if (error instanceof APIError) {
       console.error(`API Error: ${error.message}`);
@@ -536,7 +536,7 @@ import { APIError } from 'iqsuite-node-sdk';
       'new-document.pdf'
     );
 
-    console.log(`Task ID: ${taskResponse.data.task_id}`);
+    console.log(`Task ID: ${taskResponse.task_id}`);
   } catch (error) {
     if (error instanceof APIError) {
       console.error(`API Error: ${error.message}`);
