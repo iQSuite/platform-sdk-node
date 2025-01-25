@@ -1495,8 +1495,8 @@ The iQ Suite Platform offers a free and unlimited usage of the tokenizer model t
 
 >**NOTE:** The below tokenizer method is rate limitted to 50 requests per minute.
 ```js
-response = await client.tokenizer('your_text');
-console.log(response);
+  const response = await client.tokenizer('hello world');
+  console.log(response.tokens_count);
 ```
 
 #### Supported Formats
