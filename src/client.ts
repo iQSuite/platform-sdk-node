@@ -259,7 +259,7 @@ export class IQSuiteClient {
   ): Promise<[TaskResponse, TaskStatus]> {
     try {
       const response = await this.addDocument(indexId, document, filename);
-      const taskId = response.data.task_id; // Updated here
+      const taskId = response.task_id;
 
       let retries = 0;
       while (retries < maxRetries) {

@@ -608,7 +608,7 @@ import { APIError } from 'iqsuite-node-sdk';
       newDocumentBuffer,
       'new-document.pdf',
       10,       // maxRetries
-      3000      // pollInterval in ms
+      30        // pollInterval
     );
 
     console.log("Document indexing completed");
