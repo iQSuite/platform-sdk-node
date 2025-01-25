@@ -1376,7 +1376,7 @@ import { APIError, WebhookResponse } from 'iqsuite-node-sdk';
       "whk_abc123",                        // The ID of the webhook to update
       "https://your-domain.com/new-endpoint", // The new endpoint URL
       "Updated Webhook Name",              // The new name for the webhook
-      true                                 // Whether the webhook should be enabled (true/false)
+      "true"                                 // Whether the webhook should be enabled in strings (true/false)
     );
 
     console.log('Updated Webhook:', updatedWebhook);
